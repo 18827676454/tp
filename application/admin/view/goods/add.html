@@ -1,0 +1,216 @@
+<!--编辑器-->
+{extend name="template/base" /}
+
+{block name="style"}
+<style>
+    .order_active a{
+        color: #FFF !important;
+        background-color: #428bca !important;
+        border-radius: 3px 3px 0 0;border-color:#428bca !important;
+    }
+    .tab-content{
+        margin:10px;
+        padding: 10px;
+        top:30px;
+        min-height:500px;
+    }
+    .tab-pane{
+        margin: 10px;
+        padding: 4px;
+        height:100%;
+    }
+</style>
+{/block}
+{block name="content"}
+<div class="page-container" >
+    <div >
+    <form class="form form-horizontal"  action="{:url('Goods/add')}" id="form-article-add" method="post">
+        <div class="panel panel-default">
+            <div class="panel-body"  id="app">
+                <ul class="nav nav-arrow-next nav-tabs" id="myTab"  style="margin-bottom:10px;">
+                    <li class="order_active"><a href="javascript:">基本信息</a></li>
+                    <li><a href="javascript:">商品详情</a></li>
+                    <li><a href="javascript:">商品规格</a></li>
+                    <li><a href="javascript:">玩法说明</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane  active"  id="tab_basic">
+                        <div class="row cl">
+                            <label class="form-label col-xs-2"><span class="c-red">*</span>商品图片：</label>
+
+                            <div class="col-sm-9">
+                                <div class="app-img-show pull-left">
+                                </div>
+                                <button class="upload-img btn btn-primary" type="button" data-input-name="img_url"><i
+                                        class="fa fa-upload"></i>&nbsp;&nbsp;<span class="bold">添加图片</span></button>
+                                <div class="upload-img-ids">
+                                    <input data-input="img" type="hidden" name="img_url[]" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-xs-2"><span class="c-red">*</span>商品名称：</label>
+                            <div class="formControls col-xs-6">
+                                <input type="text" class="input-text" v-model="goods.goods_name" name="goods_name">
+                            </div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-xs-2"><span class="c-red">*</span>商品分类：</label>
+                            <div class="formControls col-xs-3">
+                                <span class="select-box">
+                                <select  v-model="goods.cat_id" class="select" >
+
+                                    <option :value="item.id" v-for="item in goods_type" V-bind:style="{color: ac_color[item.level]}">{{item.level|changeLevel}}{{item.cat_name}}</option>
+                                </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-xs-2">商品角标：</label>
+                            <div class="col-xs-4">
+                                <input name="shop_type" type="radio" value="1" v-model="goods.shop_type" >&nbsp;折扣&nbsp;&nbsp;
+                                <input name="shop_type" type="radio" value="2" v-model="goods.shop_type">&nbsp;热卖&nbsp;&nbsp;
+                                <input name="shop_type" type="radio" value="3" v-model="goods.shop_type">&nbsp;新上&nbsp;&nbsp;
+                                <input name="shop_type" type="radio" value="4" v-model="goods.shop_type">&nbsp;限时&nbsp;&nbsp;
+                                <input name="shop_type" type="radio" value="0"  v-model="goods.shop_type">&nbsp;无
+                            </div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-xs-2">市场价格：</label>
+
+                            <div class="formControls col-xs-2">
+                                <input type="text" class="input-text" v-model="goods.market_price" name="market_price">
+                            </div>
+                            <div class="formControls col-xs-2">元</div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-xs-2"><span class="c-red">*</span>本店价：</label>
+                            <div class="formControls col-xs-2">
+                                <input type="text" class="input-text" v-model="goods.goods_price" name="goods_price">
+                            </div>
+                            <div class="formControls col-xs-2">元</div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-xs-2">活动类型：</label>
+                            <div class="col-xs-4">
+                                <input name="commend_type" type="radio" value="1" v-model="goods.commend_type">&nbsp;免费商品
+                                <input name="commend_type" type="radio" value="2" v-model="goods.commend_type" >&nbsp;折扣商品
+                            </div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-xs-2"><span class="c-red">*</span>所需点赞数：</label>
+                            <div class="formControls col-xs-2">
+                                <input type="text" class="input-text" v-model="goods.sale_num"  >
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-xs-2"><span class="c-red">*</span>集赞时间限制：</label>
+                            <div class="formControls col-xs-2">
+                                <input type="text" class="input-text" v-model="goods.time_str" name="time_str">
+                            </div>
+                            <div class="formControls col-xs-2">小时后</div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-xs-2">商品单位：</label>
+
+                            <div class="formControls col-xs-2">
+                                <input type="text" class="input-text" v-model="goods.unit"  name="unit">
+                            </div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-xs-2">是否上架：</label>
+                            <div class="col-xs-4">
+                                <input name="status" type="radio" value="2" v-model="goods.state">&nbsp;下架
+                                <input name="status" type="radio" value="1" v-model="goods.state">&nbsp;上架
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="tab_des1">
+                        <div class="row cl">
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">商品详情</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <script id="goods_desc" data-input-name="goods_desc"  v-model="goods.desc" name="goods_desc" type="text/plain" style="width:100%;height:400px;"></script>
+                                <script>
+
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                <div class="tab-pane" >
+                    <div class="row cl">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th style="width:50px;"></th>
+                                <th>规格名称</th>
+                                <th>规格值</th>
+                            </tr>
+                            </thead>
+                            <tbody id="param-items" class="ui-sortable">
+
+                            </tbody>
+                            <tbody>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td colspan="2">
+                                    <a href="javascript:;" id="add-param" onclick="addParam()" style="margin-top:10px;" class="btn btn-default" title="添加参数">
+                                        <i class="fa fa-plus"></i> 添加规格</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="tab-pane">
+                    <div class="row cl">
+                        <label class="col-xs-12 col-sm-2 col-md-2 control-label">玩法说明</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <script id="require" data-input-name="require" v-model="goods.require"  name="require" type="text/plain" style="width:100%;height:400px;"></script>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row cl" >
+                    <div class="col-md-12" style="text-align:center">
+                        <button class="btn btn-default btn-lg " onclick="history.go(-1);" type="button"><i class="fa fa-arrow-left"></i> 返回</button>
+                        <button class="btn btn-danger btn-lg " @click="submit" type="button"><i class="fa fa-edit"></i> 提交</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+    </form>
+    </div>
+</div>
+{/block}
+{block name="script"}
+
+<script>
+    var goods = {$vo};
+    var goods_type = {$goods_type};
+
+</script>
+
+<script type="text/javascript" src="__LIB__/showdown/1.4.2/showdown.min.js"></script>
+<script>window.UEDITOR_HOME_URL = '__LIB__/ueditor/1.4.3/'</script>
+<script type="text/javascript" charset="utf-8" src="__LIB__/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__LIB__/ueditor/1.4.3/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__LIB__/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="__STATIC__/js/goods.js"></script>
+
+
+
+
+
+{/block}

@@ -30,6 +30,8 @@ class Index extends Controller
         // 节点转为树
         $tree_node = list_to_tree($nodes);
 
+//        dump($tree_node); exit;
+
         // 显示菜单项
         $menu = [];
         $groups_id = [];
@@ -45,6 +47,7 @@ class Index extends Controller
             }
         }
 
+
         // 获取授权节点分组信息
         $groups_id = array_unique($groups_id);
         if (!$groups_id) {
@@ -52,6 +55,7 @@ class Index extends Controller
         }
         $groups = Db::name("AdminGroup")->where(['id' => ['in', $groups_id], 'status' => "1"])->order("sort asc,id asc")->field('id,name,icon')->select();
 
+//        dump($groups); exit;
         $this->view->assign('groups', $groups);
         $this->view->assign('menu', $menu);
 

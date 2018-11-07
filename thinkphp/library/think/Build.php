@@ -142,6 +142,7 @@ class Build
                     }
                 }
             } else {
+                dump($file); exit;
                 // 生成相关 MVC 文件
                 foreach ($file as $val) {
                     $val      = trim($val);

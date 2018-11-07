@@ -638,3 +638,76 @@ function _del_recycle_all(url, checkbox_group, msg, return_msg) {
 function _del_all(url, checkbox_group, msg) {
     _del_recycle_all(url, checkbox_group, msg, "已删除！")
 }
+
+//导出模式选择
+function selectedExport(){
+    $('#toolbar').find('select').change(function () {
+        var param = {
+            exportDataType: $this.val(),
+        };
+        $('#table').bootstrapTable('refreshOptions', param);
+    });
+}
+
+//初始化客户端显示表格
+function InitClientTable(data) {
+    //记录页面bootstrap-table全局变量$table，方便应用
+    $table = $('#table').bootstrapTable({
+        search: true,
+        showRefresh: true,
+        showToggle: true,
+        showColumns: true,
+        toolbar: '#toolbar',
+        iconSize: 'outline',
+        minimumCountColumns: "2",
+        pagination: true,
+        idField: "id",
+        pageSize : 10,
+        pageList: "[10, 50, 100, ALL]",
+        sidePagination: "client",
+        data: data,
+        icons: {
+            refresh: 'glyphicon-repeat',
+            toggle: 'glyphicon-list-alt',
+            columns: 'glyphicon-list',
+            detailOpen: 'glyphicon-plus icon-plus',
+            detailClose: 'glyphicon-minus icon-minus',
+            export: 'glyphicon-export'
+        },
+        onLoadSuccess: function () {
+        },
+        onLoadError: function () {
+            showTips("数据加载失败！");
+        },
+        onDblClickRow: function (row, $element) {
+            var id = row.ID;
+            EditViewById(id, 'view');
+        },
+        showExport: true,  //是否显示导出按钮
+        exportDataType: 'all'
+
+    });
+}
+
+//跳转之后记住选中状态
+$('#table').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table',function(e,rows){
+    var datas = $.isArray(rows) ? rows : [rows];        // 点击时获取选中的行或取消选中的行
+    examine(e.type,datas);                              // 保存到全局 Array() 里
+});
+
+var overAllIds = new Array();  //全局数组
+
+function examine(type,datas){
+    if(type.indexOf('uncheck')==-1){
+        $.each(datas,function(i,v){
+            // 添加时，判断一行或多行的 id 是否已经在数组里 不存则添加　
+            overAllIds.indexOf(v.id) == -1 ? overAllIds.push(v.id) : -1;
+        });
+    }else{
+        $.each(datas,function(i,v){
+            overAllIds.splice(overAllIds.indexOf(v.id),1);    //删除取消选中行
+        });
+    }
+
+    //console.log(overAllIds);
+}

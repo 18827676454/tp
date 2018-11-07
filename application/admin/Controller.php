@@ -1,12 +1,5 @@
 <?php
-/**
- * tpAdmin [a web admin based ThinkPHP5]
- *
- * @author    yuan1994 <tianpian0805@gmail.com>
- * @link      http://tpadmin.yuan1994.com/
- * @copyright 2016 yuan1994 all rights reserved.
- * @license   http://www.apache.org/licenses/LICENSE-2.0
- */
+
 
 namespace app\admin;
 
@@ -114,10 +107,16 @@ class Controller extends \think\Controller
      */
     protected function getModel($controller = '', $type = false)
     {
+
         $module = Config::get('app.model_path');
         if (!$controller) {
             $controller = $this->request->controller();
         }
+
+//        $controller = explode('.' , $controller);
+
+//        $controller = is_array($controller)? array_pop($controller) : $controller;
+
         if (
             class_exists($modelClass = Loader::parseClass($module, 'model', $this->parseCamelCase($controller)))
             || class_exists($modelClass = Loader::parseClass($module, 'model', $controller))
@@ -379,6 +378,7 @@ class Controller extends \think\Controller
                 ->where($map)
                 ->order($order_by)
                 ->paginate($listRows, false, ['query' => $this->request->get()]);
+
             if ($return) {
                 // 返回值
                 return $list;

@@ -1,28 +1,76 @@
 {extend name="template/base" /}
 {block name="content"}
-<div class="page-container">
+<div class="page-container" id="app">
     {include file='login_log/form' /}
-    <div class="cl pd-5 bg-1 bk-gray">
-        <span class="l">
-        </span>
-        <span class="r pt-5 pr-5">
-            共有数据 ：<strong>{$count}</strong> 条
-        </span>
+    <div id="toolbar">
+        <select class="form-control">
+            <option value="">导出当前</option>
+            <option value="all">导出全部</option>
+            <option value="selected">导出所选</option>
+        </select>
     </div>
-    <table class="table table-border table-bordered table-hover table-bg mt-20">
+
+    <table class="table table-border table-bordered table-hover table-bg" id="table">
         <thead>
-        <tr class="text-c">
-            {include file="login_log/th" /}
-        </tr>
+            <tr>
+                <th  data-select="false" data-checkbox="true"  ></th>
+                <th data-field="id">编号</th>
+                <th data-field="uid">用户编号 </th>
+                <th data-field="login_ip">登录IP</th>
+                <th data-field="login_location">登录地址</th>
+                <th data-field="login_browser">浏览器</th>
+                <th data-field="login_os">系统</th>
+                <th data-field="login_time">添加时间</th>
+                <th data-events="myEvents" data-formatter="actionFormatter">操作</th>
+            </tr>
         </thead>
-        <tbody>
-        {volist name="list" id="vo"}
-        <tr class="text-c">
-            {include file="login_log/td" /}
-        </tr>
-        {/volist}
-        </tbody>
     </table>
-    <div class="page-bootstrap">{$page}</div>
 </div>
+{/block}
+{block name="script"}
+
+<script type="application/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            where: {},
+            page: 1,
+            limit: 20
+//            sort:[],
+//            data:[]
+        }
+    });
+
+    //    function search() {
+    //        console.log(app);
+    //
+    //       var url = '{:\\think\\Request::instance()->baseUrl()}';
+    //
+    //       $.post(url  , app._data , function (_) {
+    //
+    //       }, 'json');
+    //    }
+
+    InitClientTable({$list});
+
+    function actionFormatter(value, row, index) {
+        var action = [];
+        var id = value;
+        var result = "";
+        action.push('<button id="goods-action" data-href="' + row.edit_url + '" class="btn btn-circle btn-success" data-state="2" type="button"><i class="fa fa-pencil-square-o "></i> 编辑</button>');
+
+        action.push("<a href='javascript:;' class='btn btn-xs green lable-success' onclick=\"EditViewById('" + id + "', view='view')\" title='查看'><span class='glyphicon glyphicon-search'></span></a>");
+        return action;
+    }
+
+    $('#toolbar').find('select').change(function () {
+        var param = {
+            exportDataType: 'selected',
+            search: false
+        };
+        $('#table').bootstrapTable('refreshOptions', param);
+    });
+
+
+</script>
 {/block}

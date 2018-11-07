@@ -1,12 +1,5 @@
 <?php
-/**
- * tpAdmin [a web admin based ThinkPHP5]
- *
- * @author    yuan1994 <tianpian0805@gmail.com>
- * @link      http://tpadmin.yuan1994.com/
- * @copyright 2016 yuan1994 all rights reserved.
- * @license   http://www.apache.org/licenses/LICENSE-2.0
- */
+
 
 use \think\Request;
 
@@ -40,5 +33,24 @@ return [
         'taglib_pre_load' => 'app\\admin\\taglib\\Tp',
         // 默认主题
         'default_theme'   => '',
+    ],
+    //验证码
+    'captcha'  => [
+        // 验证码字符集合
+        'codeSet'  => '2345679',
+        // 使用中文验证码
+        'useZh' =>false,
+        // 字体大小
+        'fontSize' => 35,
+        // 是否画混淆曲线
+        'useCurve' => true,
+        // 验证码图片高度
+        'imageH'   => '',
+        // 验证码图片宽度
+        'imageW'   => '',
+        // 验证码长度（位数）
+        'length'   => 4,
+        // 验证成功后是否重置
+        'reset'    => true
     ],
 ];

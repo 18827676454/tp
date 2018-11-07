@@ -68,6 +68,7 @@ class Pub
      */
     public function login()
     {
+
         if (Session::has(Config::get('rbac.user_auth_key'))) {
             $this->redirect('Index/index');
         } else {

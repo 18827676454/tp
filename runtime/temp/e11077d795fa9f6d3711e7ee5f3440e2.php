@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"F:\phpstudy\WWW\tp-admin\public/../application/admin\view\pub\login.html";i:1539177075;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"F:\phpstudy\WWW\tp-admin\public/../application/admin\view\pub\login.html";i:1541127156;}*/ ?>
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
@@ -26,13 +26,12 @@
 </head>
 <body>
 <div class="header">
-    <h1><?php echo \think\Config::get('site.name'); ?> <?php echo \think\Config::get('site.version'); ?> 后台管理系统</h1>
 </div>
 <div class="loginWraper">
     <div id="loginform" class="loginBox">
         <form class="form form-horizontal" action="<?php echo \think\Url::build('checkLogin'); ?>" method="post" id="form">
             <div class="row cl">
-                <label class="form-label col-xs-3 col-ms-3" style="line-height: 36px;font-size: 20px;">帐号111</label>
+                <label class="form-label col-xs-3 col-ms-3" style="line-height: 36px;font-size: 20px;">帐号</label>
                 <div class="formControls col-xs-6 col-ms-6">
                     <input name="account" type="text" placeholder="帐号" class="input-text size-L" datatype="*" nullmsg="请填写帐号">
                 </div>
@@ -69,7 +68,6 @@
         </form>
     </div>
 </div>
-<div class="footer">Copyright yuan1994 by <?php echo \think\Config::get('site.name'); ?> <?php echo \think\Config::get('site.version'); ?></div>
 <script type="text/javascript" src="/static/lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="/static/lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="/static/lib/Validform/5.3.2/Validform.min.js"></script>

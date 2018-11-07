@@ -1,12 +1,5 @@
 <?php
-/**
- * tpAdmin [a web admin based ThinkPHP5]
- *
- * @author    yuan1994 <tianpian0805@gmail.com>
- * @link      http://tpadmin.yuan1994.com/
- * @copyright 2016 yuan1994 all rights reserved.
- * @license   http://www.apache.org/licenses/LICENSE-2.0
- */
+
 
 use think\Exception;
 use think\Log;
@@ -595,10 +588,15 @@ class Generate
         }
         $tdMenu .= tab(4) . '{tp:menu menu=\'sedit\' /}' . "\n";
         // 有回收站
+        $controller = $data['controller'];
+        $controller = explode('.' , $controller);
+
+        $controller = is_array($controller)? array_pop($controller) : $controller;
+
         if (in_array('recyclebin', $menuArr)) {
-            $form = '{include file="form" /}';
-            $th = '{include file="th" /}';
-            $td = '{include file="td" /}';
+            $form = '{include file="'.$controller.'/form" /}';
+            $th = '{include file="'.$controller.'/th" /}';
+            $td = '{include file="'.$controller.'/td" /}';
             $tdMenu .= tab(4) . '{tp:menu menu=\'sdelete\' /}';
         } else {
             $form = implode("\n" . tab(1), $code['search']);
